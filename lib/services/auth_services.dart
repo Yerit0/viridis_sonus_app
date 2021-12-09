@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 class AuthService extends ChangeNotifier {
   final String _baseUrl = 'apis.viridussonus.cl';
+  final Map<String, String> headers = {'Content-Type': 'application/json'};
 
   Future<String?> crearUsuarioPostmanMethod(String nombre, String aPaterno, String aMaterno,
       String nombreUsuario, String email, String password) async {
@@ -47,9 +48,15 @@ class AuthService extends ChangeNotifier {
 
     final url = Uri.https(_baseUrl, 'api/services/app/Account/Register');
 
-    final respuesta = await http.post(url, body: json.encode(authData));
+    final respuesta = await http.post(url, 
+                                      headers: headers,
+                                      body: json.encode(authData));
     final Map<String, dynamic> decodedResp = json.decode(respuesta.body);
 
-    return '';
+    if (respuesta.statusCode == 201) {
+      print(decodedResp);
+    } else {
+      print(decodedResp);
+  }
   }
 }
