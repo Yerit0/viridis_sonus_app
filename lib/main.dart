@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:viridis_sonus_app/routes.dart';
-import 'package:viridis_sonus_app/screens/home_screen.dart';
+import 'package:viridis_sonus_app/services/services.dart';
 import 'package:viridis_sonus_app/utils/theme/AppTheme.dart';
 
 void main() => runApp(AppState());
@@ -15,7 +15,7 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-
+        ChangeNotifierProvider(create: ( _ ) => AuthService())
       ],
       child: MyApp(),
     );
@@ -28,10 +28,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: AppThemeData.lightTheme,
       title: 'Viridis Sonus',
       routes: routes(),
-      home: HomeScreen()
+      initialRoute: 'login',
     );
   }
 }
