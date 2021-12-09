@@ -173,7 +173,7 @@ class _LoginForm extends StatelessWidget {
                       Text('Registrate aquí', style: boldTextStyle(color: Colors.black)),
                     ],
                   ).onTap(() {
-                    Navigator.pushNamed(context, 'register');
+                    Navigator.pushReplacementNamed(context, 'register');
                   }).center(),
                 ],
               ),

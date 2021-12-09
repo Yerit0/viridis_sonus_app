@@ -7,6 +7,6 @@ import 'package:http/http.dart' as http;
 
 class AuthService extends ChangeNotifier{
 
-  final String _baseUrl = '';
+  final String _baseUrl = 'https://apis.viridussonus.cl/';
 
 }
