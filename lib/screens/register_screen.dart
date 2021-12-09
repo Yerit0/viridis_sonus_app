@@ -4,6 +4,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:viridis_sonus_app/providers/register_form_provider.dart';
 import 'package:viridis_sonus_app/screens/login_screen.dart';
+import 'package:viridis_sonus_app/services/auth_services.dart';
 import 'package:viridis_sonus_app/utils/widgets/Colors.dart';
 import 'package:viridis_sonus_app/utils/widgets/Widgets.dart';
 
@@ -94,6 +95,7 @@ class _RegisterForm extends StatelessWidget {
                   prefixIcon: Icons.person_outline_outlined),
               textFieldType: TextFieldType.NAME,
               keyboardType: TextInputType.name,
+              onChanged: (value) => registerForm.nombre = value,
               validator: ( value ) {
                 return ( value != null && value.length >= 3 ) 
                 ? null
@@ -109,6 +111,7 @@ class _RegisterForm extends StatelessWidget {
                   prefixIcon: Icons.person_outline_outlined),
               textFieldType: TextFieldType.NAME,
               keyboardType: TextInputType.name,
+              onChanged: (value) => registerForm.aPaterno = value,
               validator: ( value ) {
                 return ( value != null && value.length >= 3 ) 
                 ? null
@@ -124,6 +127,7 @@ class _RegisterForm extends StatelessWidget {
                   prefixIcon: Icons.person_outline_outlined),
               textFieldType: TextFieldType.NAME,
               keyboardType: TextInputType.name,
+              onChanged: (value) => registerForm.aMaterno = value,
               validator: ( value ) {
                 return ( value != null && value.length >= 3 ) 
                 ? null
@@ -139,6 +143,7 @@ class _RegisterForm extends StatelessWidget {
                   prefixIcon: Icons.person_outline_outlined),
               textFieldType: TextFieldType.NAME,
               keyboardType: TextInputType.name,
+              onChanged: (value) => registerForm.nombreUsuario = value,
               errorThisFieldRequired: 'Este campo es obligatorio',
             ),
             16.height,      
@@ -150,6 +155,7 @@ class _RegisterForm extends StatelessWidget {
                   prefixIcon: Icons.email_outlined),
               textFieldType: TextFieldType.EMAIL,
               keyboardType: TextInputType.emailAddress,
+              onChanged: (value) => registerForm.email = value,
               errorInvalidEmail: 'Correo Electrónico inválido',
               errorThisFieldRequired: 'Este campo es obligatorio',
               
@@ -203,7 +209,20 @@ class _RegisterForm extends StatelessWidget {
                     width: context.width(),
                     onTap: registerForm.isLoading ? null :() async {
                       FocusScope.of(context).unfocus();
+
+                      final authService = Provider.of<AuthService>(context, listen: false);
+
                       if(!registerForm.isValidForm()) return;
+
+                      await authService.crearUsuario(
+                        registerForm.nombre,
+                        registerForm.aPaterno,
+                        registerForm.aMaterno,
+                        registerForm.nombreUsuario,
+                        registerForm.email,
+                        registerForm.password
+                      );
+
                       Navigator.pushReplacementNamed(context, 'login');
                     })
                 .paddingOnly(
