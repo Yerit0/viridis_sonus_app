@@ -8,32 +8,7 @@ import 'package:http/http.dart' as http;
 class AuthService extends ChangeNotifier {
   final String _baseUrl = 'apis.viridussonus.cl';
   final Map<String, String> headers = {'Content-Type': 'application/json'};
-
-  Future<String?> crearUsuarioPostmanMethod(String nombre, String aPaterno, String aMaterno,
-      String nombreUsuario, String email, String password) async {
-    var headers = {'Content-Type': 'application/json'};
-    var request = http.Request(
-        'POST',
-        Uri.parse(
-            'https://apis.viridussonus.cl/api/services/app/Account/Register'));
-    request.body = json.encode({
-      "nombres": nombre,
-      "apellidoPaterno": aPaterno,
-      "apellidoMaterno": aMaterno,
-      "userName": nombreUsuario,
-      "emailAddress": email,
-      "password": password
-    });
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
-    } else {
-      print(response.reasonPhrase);
-    }
-  }
+  final storage = new FlutterSecureStorage();
 
   Future<String?> crearUsuario(String nombre, String aPaterno, String aMaterno,
       String nombreUsuario, String email, String password) async {
@@ -59,4 +34,35 @@ class AuthService extends ChangeNotifier {
       print(decodedResp);
   }
   }
+
+  Future<String?> loginUsuario(String usernameOrEmail, String password) async {
+
+    final Map<String, dynamic> authData = {
+      "userNameOrEmailAddress": usernameOrEmail,
+      "password": password
+    };
+
+    final url = Uri.https(_baseUrl, 'api/Account/Authenticate');
+
+    final respuesta = await http.post(url, 
+                                      headers: headers,
+                                      body: json.encode(authData));
+    final Map<String, dynamic> decodedResp = json.decode(respuesta.body);
+
+    if(decodedResp.containsKey('result')){
+      
+    }
+
+    if (respuesta.statusCode == 200) {
+      print(decodedResp['result']);
+      await storage.write(key: 'token', value : decodedResp['result']);
+      return null;
+    } else {
+      print(decodedResp['error']['details']);
+      return decodedResp['error']['details'];
+  }
+
+  }
+
+
 }

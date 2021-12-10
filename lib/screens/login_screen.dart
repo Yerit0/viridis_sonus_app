@@ -3,6 +3,8 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:viridis_sonus_app/providers/providers.dart';
+import 'package:viridis_sonus_app/services/auth_services.dart';
+import 'package:viridis_sonus_app/services/services.dart';
 import 'package:viridis_sonus_app/utils/widgets/Colors.dart';
 import 'package:viridis_sonus_app/utils/widgets/Widgets.dart';
 
@@ -76,7 +78,7 @@ class _LoginForm extends StatelessWidget {
     return Container(
             child: Form(
               key: loginForm.formKey,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
+              //autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -125,11 +127,28 @@ class _LoginForm extends StatelessWidget {
                   AppButton(
                       text: "Ingresar",
                       color: PrimaryColor,
+                      enabled: !loginForm.isLoading,
                       textColor: Colors.white,
                       shapeBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                       width: context.width(),
-                      onTap: () {
-                        Navigator.pushReplacementNamed(context, 'home');
+                      onTap: loginForm.isLoading ? null :() async {
+                        FocusScope.of(context).unfocus();
+
+                        final authService = Provider.of<AuthService>(context, listen: false);
+
+                        if(!loginForm.isValidForm()) return;
+
+                        loginForm.isLoading = true;
+
+                        final String? erroMessage = await authService.loginUsuario(loginForm.email, loginForm.password);
+                        
+                        if (erroMessage == null) {
+                          Navigator.pushReplacementNamed(context, 'home');
+                        } else {
+                          NotificationsService.showSnackbar(erroMessage);
+                          loginForm.isLoading = false;
+                        }
+
                       }).paddingOnly(left: context.width() * 0.1, right: context.width() * 0.1),
                   30.height,
                   //Container(
