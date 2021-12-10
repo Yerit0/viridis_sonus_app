@@ -23,7 +23,6 @@ class AppState extends StatelessWidget {
 }
 
 
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -33,6 +32,7 @@ class MyApp extends StatelessWidget {
       title: 'Viridis Sonus',
       routes: routes(),
       initialRoute: 'login',
+      scaffoldMessengerKey: NotificationsService.messengerKey,
     );
   }
 }
