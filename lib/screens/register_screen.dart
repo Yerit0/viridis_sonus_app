@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:viridis_sonus_app/providers/register_form_provider.dart';
 import 'package:viridis_sonus_app/screens/login_screen.dart';
 import 'package:viridis_sonus_app/services/auth_services.dart';
+import 'package:viridis_sonus_app/services/services.dart';
 import 'package:viridis_sonus_app/utils/widgets/Colors.dart';
 import 'package:viridis_sonus_app/utils/widgets/Widgets.dart';
 
@@ -214,7 +215,7 @@ class _RegisterForm extends StatelessWidget {
 
                       if(!registerForm.isValidForm()) return;
 
-                      await authService.crearUsuario(
+                      final String? erroMessage = await authService.crearUsuario(
                         registerForm.nombre,
                         registerForm.aPaterno,
                         registerForm.aMaterno,
@@ -223,7 +224,14 @@ class _RegisterForm extends StatelessWidget {
                         registerForm.password
                       );
 
-                      Navigator.pushReplacementNamed(context, 'login');
+                      if (erroMessage == null) {
+                          Navigator.pushReplacementNamed(context, 'login');
+                        } else {
+                          NotificationsService.showSnackbar(erroMessage);
+                          registerForm.isLoading = false;
+                        }
+
+                      
                     })
                 .paddingOnly(
                     left: context.width() * 0.1, right: context.width() * 0.1),

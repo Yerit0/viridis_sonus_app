@@ -29,9 +29,9 @@ class AuthService extends ChangeNotifier {
     final Map<String, dynamic> decodedResp = json.decode(respuesta.body);
 
     if (respuesta.statusCode == 201) {
-      print(decodedResp);
+      return 'Usuario creado!';
     } else {
-      print(decodedResp);
+      return decodedResp['error']['details'];
   }
   }
 
@@ -54,11 +54,11 @@ class AuthService extends ChangeNotifier {
     }
 
     if (respuesta.statusCode == 200) {
-      print(decodedResp['result']);
+      //print(decodedResp['result']);
       await storage.write(key: 'token', value : decodedResp['result']);
       return null;
     } else {
-      print(decodedResp['error']['details']);
+      //print(decodedResp['error']['details']);
       return decodedResp['error']['details'];
   }
 
