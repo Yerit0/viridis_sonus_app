@@ -44,7 +44,7 @@ class RegistrosService extends ChangeNotifier {
       "Intensidad": 0
     };
     final jsonData = await this._getJsonData(_endpoint, bodyData);
-
+    //TODO: corroborar si result != de null antes de mapear la data al modelo
     final registrosResponse = ListadoRegistrosResponse.fromJson(jsonData);
 
     if(!registrosResponse.success){
