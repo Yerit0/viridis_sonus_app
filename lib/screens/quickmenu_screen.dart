@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class MenuRapidoScreen extends StatelessWidget {
+class QuickMenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('MenuRapidoScreen'),),
+      body: Center(child: Text('QuickMenu en construcción'),),
     );
   }
 }

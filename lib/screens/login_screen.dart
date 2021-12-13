@@ -143,7 +143,7 @@ class _LoginForm extends StatelessWidget {
                         final String? erroMessage = await authService.loginUsuario(loginForm.email, loginForm.password);
                         
                         if (erroMessage == null) {
-                          Navigator.pushReplacementNamed(context, 'home');
+                          Navigator.pushReplacementNamed(context, 'dashboard');
                         } else {
                           NotificationsService.showSnackbar(erroMessage);
                           loginForm.isLoading = false;

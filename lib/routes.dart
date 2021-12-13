@@ -7,7 +7,7 @@ Map<String, WidgetBuilder> routes(){
     'home'      : (BuildContext context) => HomeScreen(),
     'login'     : (BuildContext context) => LoginScreen(),
     'register'  : (BuildContext context) => RegisterScreen(),
-    'menurapido': (BuildContext context) => MenuRapidoScreen(),
+    'menurapido': (BuildContext context) => QuickMenuScreen(),
     'dashboard' : (BuildContext context) => DashboardScreen()
   };
 }

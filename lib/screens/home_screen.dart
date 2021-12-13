@@ -1,10 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:provider/provider.dart';
+import 'package:viridis_sonus_app/models/models.dart';
+import 'package:viridis_sonus_app/services/services.dart';
+import 'package:viridis_sonus_app/widgets/registro_widget.dart';
 
 class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final registrosService = Provider.of<RegistrosService>(context);
+
     return Scaffold(
       body: Container(
         height: context.height(),
@@ -120,12 +127,15 @@ class HomeScreen extends StatelessWidget {
                 //    Icon(Icons.play_arrow, color: Colors.grey),
                 //  ],
                 //).paddingOnly(left: 16, right: 16),
-                //16.height,
-                //Column(
-                //  children: transactionList.map((transactionItem) {
-                //    return WATransactionComponent(transactionModel: transactionItem);
-                //  }).toList(),
-                //),
+                16.height,
+                
+                registrosService.registros.length != 0
+                ? Column(
+                  children: registrosService.registros.map((registrosItem) {
+                    return RegistroWidget(registroModel: registrosItem,);
+                  }).toList()
+                )
+                : Center(child: CupertinoActivityIndicator()),
               ],
             ),
           ),
