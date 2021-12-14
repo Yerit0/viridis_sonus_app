@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+
 import 'package:viridis_sonus_app/models/models.dart';
 
-class SonometroService extends ChangeNotifier {
+class UsuarioService extends ChangeNotifier {
+
   final String _baseUrl = 'apis.viridussonus.cl';
   final Map<String, String> headers = {'Content-Type': 'application/json'};
   final storage = new FlutterSecureStorage();
-  
-  List<Sonometro> listadoSonometro = [];
 
-  SonometroService(){
-    this.getSonometros();
+  Usuario? infoUsuario;
+
+  UsuarioService(){
+    this.getInfoUsario();
   }
 
   Future<String> _getJsonData( String endpoint) async {
@@ -26,24 +28,21 @@ class SonometroService extends ChangeNotifier {
     print(response.body);
     return response.body;
   }
-  
-  getSonometros() async {
-    String _endpoint = 'api/services/app/RegistrosSonido/TiposSonometros';
+
+  getInfoUsario () async {
+    String _endpoint = 'api/services/app/RegistrosSonido/InfoUsuario';
     final jsonData = await this._getJsonData(_endpoint);
     //TODO: Borrar print
     print(jsonData);
 
-    final ListadoSonometroResponse sonometrosResponse = ListadoSonometroResponse.fromJson(jsonData);
+    final InfoUsuarioResponse infoUsuarioResponse = InfoUsuarioResponse.fromJson(jsonData);
 
-    if(!sonometrosResponse.success){
-      return sonometrosResponse.error['message'];
+    if(!infoUsuarioResponse.success){
+      return infoUsuarioResponse.error['message'];
     } else {
-      this.listadoSonometro = sonometrosResponse.result;
+      this.infoUsuario = infoUsuarioResponse.result;
       notifyListeners();
     }
-
-
-
   }
-  
+
 }

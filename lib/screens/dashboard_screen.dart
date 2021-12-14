@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:viridis_sonus_app/providers/providers.dart';
+import 'package:viridis_sonus_app/services/services.dart';
 import 'package:viridis_sonus_app/utils/widgets/Colors.dart';
-import 'screens.dart';
+
 
 class DashboardScreen extends StatelessWidget {
 
@@ -21,18 +24,44 @@ class _BuildDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tabPage = Provider.of<TabPageProvider>(context);
+    final sonometroServices = Provider.of<SonometroService>(context);
+    final usuarioService = Provider.of<UsuarioService>(context);
+
     return Scaffold(
       body: tabPage.paginas.elementAt(tabPage.selectedIndex),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
       floatingActionButton: Padding(
         padding: EdgeInsets.all(6.0),
-        child: FloatingActionButton(
+        child: usuarioService.infoUsuario == null
+        ? FloatingActionButton(
           backgroundColor: PrimaryColor,
-          child: Icon(Icons.mic, color: Colors.white),
+          child: CupertinoActivityIndicator(),
           onPressed: () {
-            //VSGrabacionScreen().launch(context);
           },
-        ),
+        )
+        : usuarioService.infoUsuario!.roles.contains('Investigador')
+        ? SpeedDial(
+          icon: Icons.add,
+          activeIcon: Icons.close,
+          overlayColor: Colors.black,
+          overlayOpacity: 0.2,
+          backgroundColor: PrimaryColor,
+          children: [
+            SpeedDialChild(
+              child: Icon(Icons.phone_android_outlined), 
+              backgroundColor: PrimaryColor,
+              onTap: () => Navigator.pushNamed(context, 'celular')),
+            SpeedDialChild(
+              child: Icon(Icons.mic_external_on_outlined), 
+              backgroundColor: PrimaryColor,
+              onTap: () => Navigator.pushNamed(context, 'investigador'))
+          ],
+        )
+        : FloatingActionButton(
+          backgroundColor: PrimaryColor,
+          child: Icon(Icons.add),
+          onPressed: () => Navigator.pushNamed(context, 'celular')
+        )
       ),
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),

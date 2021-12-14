@@ -51,7 +51,7 @@ class RegisterScreen extends StatelessWidget {
                       width: 100,
                       decoration: boxDecorationRoundedWithShadow(30),
                       child: Image.asset(
-                        'assets/images/wa_app_logo.png',
+                        'assets/images/file-document-edit-outline.png',
                         height: 60,
                         width: 60,
                         fit: BoxFit.cover,

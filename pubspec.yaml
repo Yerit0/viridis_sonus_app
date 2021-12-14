@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_secure_storage: ^5.0.2
+  flutter_speed_dial: ^5.0.0+1
   google_fonts: ^2.1.0
   html: ^0.15.0
   http: ^0.13.4
