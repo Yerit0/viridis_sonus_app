@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter/rendering.dart';
@@ -21,6 +22,7 @@ class LoginScreen extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
+                20.height,
                 Text("Inicio de Sesión", style: boldTextStyle(size: 24)),
                 Container(
                   margin: EdgeInsets.all(16),
@@ -86,6 +88,7 @@ class _LoginForm extends StatelessWidget {
                   Text("Correo Electrónico", style: boldTextStyle(size: 14)),
                   8.height,
                   AppTextField(
+                    enabled: !loginForm.isLoading,
                     decoration: inputDecoration(
                       hint: 'Ingresa tu correo electrónico aquí', 
                       prefixIcon: Icons.email_outlined),
@@ -104,6 +107,7 @@ class _LoginForm extends StatelessWidget {
                   Text("Contraseña", style: boldTextStyle(size: 14)),
                   8.height,
                   AppTextField(
+                    enabled: !loginForm.isLoading,
                     decoration: inputDecoration(
                       hint: 'Ingresa tu contraseña aquí', 
                       prefixIcon: Icons.lock_outline),
@@ -124,10 +128,21 @@ class _LoginForm extends StatelessWidget {
                   //  child: Text("¿Olvidó su contraseña?", style: primaryTextStyle()),
                   //),
                   30.height,
-                  AppButton(
+                  loginForm.isLoading
+                  ? IgnorePointer(
+                    ignoring: loginForm.isLoading,
+                    child: AppButton(
+                      child: CupertinoActivityIndicator(),
+                        color: PrimaryColor,
+                        textColor: Colors.white,
+                        shapeBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                        width: context.width(),
+                        onTap:(){}
+                    ).paddingOnly(left: context.width() * 0.1, right: context.width() * 0.1),
+                  )
+                  : AppButton(
                       text: "Ingresar",
                       color: PrimaryColor,
-                      enabled: !loginForm.isLoading,
                       textColor: Colors.white,
                       shapeBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                       width: context.width(),

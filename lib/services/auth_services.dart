@@ -29,7 +29,7 @@ class AuthService extends ChangeNotifier {
     if (respuesta.statusCode == 201) {
       return 'Usuario creado!';
     } else {
-      return decodedResp['error']['details'];
+      return decodedResp['error']['message'];
   }
   }
 

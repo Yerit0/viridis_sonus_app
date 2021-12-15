@@ -8,13 +8,19 @@ class RegistroInvestigadorProvider extends ChangeNotifier {
   double maxima = -1;
   double media = -1;
   int? claseSonometroId;
-  bool? interior;
-  double latitud = -33.5111;
-  double longitud = -71.6160;
-  double altitud = 4.0;
-  bool? investigador;
+  bool _interior = false;
+  double? latitud;
+  double? longitud;
+  double altitud = 1.0;
+  bool investigador = true;
 
   bool _isLoading = false;
+
+  bool get interior => _interior;
+  set interior(bool value) {
+    _interior = value;
+    notifyListeners();
+  }
 
   bool get isLoading => _isLoading;
   set isLoading(bool value){

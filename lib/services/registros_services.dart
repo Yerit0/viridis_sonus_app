@@ -17,7 +17,7 @@ class RegistrosService extends ChangeNotifier {
     this.getRegistros();
   }
   
-  Future<String> _getJsonData( String endpoint, Map<String, dynamic> body) async {
+  Future<String?> _getJsonData( String endpoint, Map<String, dynamic> body) async {
     final token = await storage.read(key: 'token') ?? '';
     var headers = {
       'Authorization': 'Bearer $token',
@@ -26,9 +26,7 @@ class RegistrosService extends ChangeNotifier {
     final url = Uri.https(this._baseUrl, endpoint, );
 
     final response = await http.post(url, headers: headers, body: json.encode(body));
-    print(response.body);
-    return response.body;
-
+      return response.body;
     }
 
   getRegistros() async {
@@ -45,14 +43,42 @@ class RegistrosService extends ChangeNotifier {
     };
     final jsonData = await this._getJsonData(_endpoint, bodyData);
     //TODO: corroborar si result != de null antes de mapear la data al modelo
-    final registrosResponse = ListadoRegistrosResponse.fromJson(jsonData);
+
+    final registrosResponse = ListadoRegistrosResponse.fromJson(jsonData!);
 
     if(!registrosResponse.success){
       return registrosResponse.error['message'];
     } else {
-      this.registros = registrosResponse.result!.items;
+      this.registros = registrosResponse.result!.items!;
       notifyListeners();
     }
-
   }
+
+  crearRegistro(double minima, double maxima, double media, int claseSonometroId, bool interior,
+                double latitud, double longitud, bool investigador) async {
+    String _endpoint = 'api/services/app/RegistrosSonido/Create';
+    final Map<String, dynamic> bodyData = {
+      "MINIMA": minima,
+      "MAXIMA": maxima,
+      "MEDIA": media, //desde formulario
+      "CLASESONOMETROID": claseSonometroId, //desde lista de sonometro
+      "Interior": interior,
+      "LATITUD": latitud,
+      "LONGITUD": longitud,
+      "ALTITUD": 0,
+      "INVESTIGADOR": investigador
+    };
+    final jsonData = await this._getJsonData(_endpoint, bodyData);
+
+    final Map<String, dynamic> decodedResponse = jsonDecode(jsonData!);
+
+    if( decodedResponse['success'] == true ){
+      await getRegistros();
+      return null;
+    } else {
+      return decodedResponse['error']['message'];
+    }
+    
+  }
+
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -80,176 +81,189 @@ class _RegisterForm extends StatelessWidget {
 
     final registerForm = Provider.of<RegisterFormProvider>(context);
 
-    return Container(
-      child: Form(
-        key: registerForm.formKey,
-        //autovalidateMode: AutovalidateMode.always,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            50.height,
-            Text("Nombres", style: boldTextStyle(size: 14)),
-            8.height,
-            AppTextField(
-              decoration: inputDecoration(
-                  hint: 'Ingresa tus nombres aquí',
-                  prefixIcon: Icons.person_outline_outlined),
-              textFieldType: TextFieldType.NAME,
-              keyboardType: TextInputType.name,
-              onChanged: (value) => registerForm.nombre = value,
-              validator: ( value ) {
-                return ( value != null && value.length >= 3 ) 
-                ? null
-                : 'El Nombre debe ser de 3 caracteres mínimo';
-              },
-            ),
-            16.height,
-            Text("Apellido Paterno", style: boldTextStyle(size: 14)),
-            8.height,
-            AppTextField(
-              decoration: inputDecoration(
-                  hint: 'Ingresa tu apellido paterno aquí',
-                  prefixIcon: Icons.person_outline_outlined),
-              textFieldType: TextFieldType.NAME,
-              keyboardType: TextInputType.name,
-              onChanged: (value) => registerForm.aPaterno = value,
-              validator: ( value ) {
-                return ( value != null && value.length >= 3 ) 
-                ? null
-                : 'El Apellido Paterno debe ser de 3 caracteres mínimo';
-              },
-            ),
-            16.height,
-            Text("Apellido Materno", style: boldTextStyle(size: 14)),
-            8.height,
-            AppTextField(
-              decoration: inputDecoration(
-                  hint: 'Ingresa tu apellido materno aquí',
-                  prefixIcon: Icons.person_outline_outlined),
-              textFieldType: TextFieldType.NAME,
-              keyboardType: TextInputType.name,
-              onChanged: (value) => registerForm.aMaterno = value,
-              validator: ( value ) {
-                return ( value != null && value.length >= 3 ) 
-                ? null
-                : 'El Apellido Materno debe ser de 3 caracteres mínimo';
-              },
-            ),
-            16.height,      
-            Text("Nombre de Usuario", style: boldTextStyle(size: 14)),
-            8.height,
-            AppTextField(
-              decoration: inputDecoration(
-                  hint: 'Ingresa tu nombre de usuario aquí',
-                  prefixIcon: Icons.person_outline_outlined),
-              textFieldType: TextFieldType.NAME,
-              keyboardType: TextInputType.name,
-              onChanged: (value) => registerForm.nombreUsuario = value,
-              errorThisFieldRequired: 'Este campo es obligatorio',
-            ),
-            16.height,      
-            Text("Correo Electrónico", style: boldTextStyle(size: 14)),
-            8.height,
-            AppTextField(
-              decoration: inputDecoration(
-                  hint: 'Ingresa tu correo electrónico aquí',
-                  prefixIcon: Icons.email_outlined),
-              textFieldType: TextFieldType.EMAIL,
-              keyboardType: TextInputType.emailAddress,
-              onChanged: (value) => registerForm.email = value,
-              errorInvalidEmail: 'Correo Electrónico inválido',
-              errorThisFieldRequired: 'Este campo es obligatorio',
-              
-            ),
-            16.height,
-            Text("Contraseña", style: boldTextStyle(size: 14)),
-            8.height,
-            AppTextField(
-              decoration: inputDecoration(
-                  hint: 'Ingresa tu nueva contraseña aquí',
-                  prefixIcon: Icons.lock_outline),
-              suffixIconColor: PrimaryColor,
-              textFieldType: TextFieldType.PASSWORD,
-              isPassword: true,
-              keyboardType: TextInputType.visiblePassword,
-              onChanged: (value) => registerForm.password = value,
-              validator: ( value ) {
-                return ( value != null && value.length >= 6 ) 
-                ? null
-                : 'la Contraseña debe ser de 6 caracteres mínimo';
-              },
-              
-            ),
-            16.height,
-            Text("Confirmar Contraseña", style: boldTextStyle(size: 14)),
-            8.height,
-            AppTextField(
-              decoration: inputDecoration(
-                  hint: 'Repetir contraseña aquí',
-                  prefixIcon: Icons.lock_outline),
-              suffixIconColor: PrimaryColor,
-              textFieldType: TextFieldType.PASSWORD,
-              isPassword: true,
-              keyboardType: TextInputType.visiblePassword,
-              validator: (value) {
-                  if(registerForm.password != value){
-                    return 'La contraseña no coincide';
-                  }
+    return IgnorePointer(
+      ignoring: registerForm.isLoading,
+      child: Container(
+        child: Form(
+          key: registerForm.formKey,
+          //autovalidateMode: AutovalidateMode.always,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              50.height,
+              Text("Nombres", style: boldTextStyle(size: 14)),
+              8.height,
+              AppTextField(
+                decoration: inputDecoration(
+                    hint: 'Ingresa tus nombres aquí',
+                    prefixIcon: Icons.person_outline_outlined),
+                textFieldType: TextFieldType.NAME,
+                keyboardType: TextInputType.name,
+                onChanged: (value) => registerForm.nombre = value,
+                validator: ( value ) {
+                  return ( value != null && value.length >= 3 ) 
+                  ? null
+                  : 'El Nombre debe ser de 3 caracteres mínimo';
+                },
+              ),
+              16.height,
+              Text("Apellido Paterno", style: boldTextStyle(size: 14)),
+              8.height,
+              AppTextField(
+                decoration: inputDecoration(
+                    hint: 'Ingresa tu apellido paterno aquí',
+                    prefixIcon: Icons.person_outline_outlined),
+                textFieldType: TextFieldType.NAME,
+                keyboardType: TextInputType.name,
+                onChanged: (value) => registerForm.aPaterno = value,
+                validator: ( value ) {
+                  return ( value != null && value.length >= 3 ) 
+                  ? null
+                  : 'El Apellido Paterno debe ser de 3 caracteres mínimo';
+                },
+              ),
+              16.height,
+              Text("Apellido Materno", style: boldTextStyle(size: 14)),
+              8.height,
+              AppTextField(
+                decoration: inputDecoration(
+                    hint: 'Ingresa tu apellido materno aquí',
+                    prefixIcon: Icons.person_outline_outlined),
+                textFieldType: TextFieldType.NAME,
+                keyboardType: TextInputType.name,
+                onChanged: (value) => registerForm.aMaterno = value,
+                validator: ( value ) {
+                  return ( value != null && value.length >= 3 ) 
+                  ? null
+                  : 'El Apellido Materno debe ser de 3 caracteres mínimo';
+                },
+              ),
+              16.height,      
+              Text("Nombre de Usuario", style: boldTextStyle(size: 14)),
+              8.height,
+              AppTextField(
+                decoration: inputDecoration(
+                    hint: 'Ingresa tu nombre de usuario aquí',
+                    prefixIcon: Icons.person_outline_outlined),
+                textFieldType: TextFieldType.NAME,
+                keyboardType: TextInputType.name,
+                onChanged: (value) => registerForm.nombreUsuario = value,
+                errorThisFieldRequired: 'Este campo es obligatorio',
+              ),
+              16.height,      
+              Text("Correo Electrónico", style: boldTextStyle(size: 14)),
+              8.height,
+              AppTextField(
+                decoration: inputDecoration(
+                    hint: 'Ingresa tu correo electrónico aquí',
+                    prefixIcon: Icons.email_outlined),
+                textFieldType: TextFieldType.EMAIL,
+                keyboardType: TextInputType.emailAddress,
+                onChanged: (value) => registerForm.email = value,
+                errorInvalidEmail: 'Correo Electrónico inválido',
+                errorThisFieldRequired: 'Este campo es obligatorio',
+                
+              ),
+              16.height,
+              Text("Contraseña", style: boldTextStyle(size: 14)),
+              8.height,
+              AppTextField(
+                decoration: inputDecoration(
+                    hint: 'Ingresa tu nueva contraseña aquí',
+                    prefixIcon: Icons.lock_outline),
+                suffixIconColor: PrimaryColor,
+                textFieldType: TextFieldType.PASSWORD,
+                isPassword: true,
+                keyboardType: TextInputType.visiblePassword,
+                onChanged: (value) => registerForm.password = value,
+                validator: ( value ) {
                   return ( value != null && value.length >= 6 ) 
-                    ? null
-                    : 'la Contraseña debe ser de 6 caracteres mínimo';
-              }
-            ),
-            30.height,
-            AppButton(
-                    text: "Registrar Cuenta",
-                    color: PrimaryColor,
-                    textColor: Colors.white,
-                    shapeBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30)),
-                    width: context.width(),
-                    onTap: registerForm.isLoading ? null :() async {
-                      FocusScope.of(context).unfocus();
-
-                      final authService = Provider.of<AuthService>(context, listen: false);
-
-                      if(!registerForm.isValidForm()) return;
-
-                      final String? erroMessage = await authService.crearUsuario(
-                        registerForm.nombre,
-                        registerForm.aPaterno,
-                        registerForm.aMaterno,
-                        registerForm.nombreUsuario,
-                        registerForm.email,
-                        registerForm.password
-                      );
-
-                      if (erroMessage == null) {
-                          Navigator.pushReplacementNamed(context, 'login');
-                        } else {
-                          NotificationsService.showSnackbar(erroMessage);
-                          registerForm.isLoading = false;
-                        }
-
-                      
-                    })
-                .paddingOnly(
-                    left: context.width() * 0.1, right: context.width() * 0.1),
-            30.height,
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('¿Ya tienes una cuenta?',
-                    style: primaryTextStyle(color: Colors.grey)),
-                4.width,
-                Text('Ingresa aquí', style: boldTextStyle(color: Colors.black)),
-              ],
-            ).onTap(() {
-              Navigator.pushReplacementNamed(context, 'login');
-            }).center(),
-          ],
+                  ? null
+                  : 'la Contraseña debe ser de 6 caracteres mínimo';
+                },
+                
+              ),
+              16.height,
+              Text("Confirmar Contraseña", style: boldTextStyle(size: 14)),
+              8.height,
+              AppTextField(
+                decoration: inputDecoration(
+                    hint: 'Repetir contraseña aquí',
+                    prefixIcon: Icons.lock_outline),
+                suffixIconColor: PrimaryColor,
+                textFieldType: TextFieldType.PASSWORD,
+                isPassword: true,
+                keyboardType: TextInputType.visiblePassword,
+                validator: (value) {
+                    if(registerForm.password != value){
+                      return 'La contraseña no coincide';
+                    }
+                    return ( value != null && value.length >= 6 ) 
+                      ? null
+                      : 'la Contraseña debe ser de 6 caracteres mínimo';
+                }
+              ),
+              30.height,
+              registerForm.isLoading
+              ? AppButton(
+                      child: CupertinoActivityIndicator(),
+                      color: PrimaryColor,
+                      textColor: Colors.white,
+                      shapeBorder: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                      width: context.width(),
+                      onTap:(){}
+              ).paddingOnly(left: context.width() * 0.1, right: context.width() * 0.1)
+              : AppButton(
+                      text: "Registrar Cuenta",
+                      color: PrimaryColor,
+                      textColor: Colors.white,
+                      shapeBorder: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                      width: context.width(),
+                      onTap: registerForm.isLoading ? null :() async {
+                        FocusScope.of(context).unfocus();
+    
+                        final authService = Provider.of<AuthService>(context, listen: false);
+    
+                        if(!registerForm.isValidForm()) return;
+    
+                        final String? erroMessage = await authService.crearUsuario(
+                          registerForm.nombre,
+                          registerForm.aPaterno,
+                          registerForm.aMaterno,
+                          registerForm.nombreUsuario,
+                          registerForm.email,
+                          registerForm.password
+                        );
+    
+                        if (erroMessage == null) {
+                            Navigator.pushReplacementNamed(context, 'login');
+                          } else {
+                            NotificationsService.showSnackbar(erroMessage);
+                            registerForm.isLoading = false;
+                          }
+    
+                        
+                      })
+                  .paddingOnly(
+                      left: context.width() * 0.1, right: context.width() * 0.1),
+              30.height,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('¿Ya tienes una cuenta?',
+                      style: primaryTextStyle(color: Colors.grey)),
+                  4.width,
+                  Text('Ingresa aquí', style: boldTextStyle(color: Colors.black)),
+                ],
+              ).onTap(() {
+                Navigator.pushReplacementNamed(context, 'login');
+              }).center(),
+            ],
+          ),
         ),
       ),
     );

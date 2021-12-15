@@ -54,11 +54,11 @@ class ListadoRegistrosResponse {
 class Resultado {
     Resultado({
         required this.totalCount,
-        required this.items,
+        this.items,
     });
 
     int totalCount;
-    List<Registro> items;
+    List<Registro>? items;
 
     factory Resultado.fromJson(String str) => Resultado.fromMap(json.decode(str));
 
