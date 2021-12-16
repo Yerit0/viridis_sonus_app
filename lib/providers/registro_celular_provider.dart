@@ -12,20 +12,25 @@ class RegistroCelularProvider extends ChangeNotifier{
   late int previousMillis;
   double millis = 0;
 
-  double correccionRuido = 0.0;
+  double _correccionRuido = 0.0;
   double reducirRuido = -5.0;
 
   double maxDB = 0.0;
   double mediaDB = 0.0;
 
   List<ChartData> chartData = [];
-  List<ChartData> liveChartData = [];
 
   ChartSeriesController? chartSeriesController;
 
   bool get isRecording => _isRecording;
   set isRecording(bool value){
     _isRecording = value;
+    notifyListeners();
+  }
+
+  double get correccionRuido => _correccionRuido;
+  set correccionRuido(double value){
+    _correccionRuido = value;
     notifyListeners();
   }
 
@@ -36,31 +41,18 @@ class RegistroCelularProvider extends ChangeNotifier{
     if (!isRecording) {
       isRecording = true;
     }
-    maxDB = noiseReading.maxDecibel + reducirRuido;
+    maxDB = noiseReading.maxDecibel + (reducirRuido + correccionRuido);
     mediaDB = noiseReading.maxDecibel;
 
     millis =((DateTime.now().millisecondsSinceEpoch - previousMillis) / 1000);
 
     chartData.add(ChartData( maxDB, mediaDB, ((DateTime.now().millisecondsSinceEpoch - previousMillis) / 1000)));
-    liveChartData.add(ChartData( maxDB, mediaDB, ((DateTime.now().millisecondsSinceEpoch - previousMillis) / 1000)));
-
-    if(liveChartData.length == 20) {
-      liveChartData.removeAt(0);
-      chartSeriesController?.updateDataSource(
-          addedDataIndexes: <int>[chartData.length - 1],
-          removedDataIndexes: <int>[0],
-      );
-      
-    } else {
-      chartSeriesController?.updateDataSource(
-      addedDataIndexes: <int>[chartData.length - 1],
-      );
-    }
+    
     notifyListeners();
   }
 
   void reset() async {
-    chartData = [];
+    chartData.clear();
     maxDB = 0.0;
     mediaDB = 0.0;
 
@@ -68,6 +60,7 @@ class RegistroCelularProvider extends ChangeNotifier{
   }
 
   void start() async {
+    reset();
     previousMillis = DateTime.now().millisecondsSinceEpoch;
     try {
       _noiseSubscription = _noiseMeter.noiseStream.listen(onData);
@@ -87,8 +80,6 @@ class RegistroCelularProvider extends ChangeNotifier{
     print('stopRecorder error: $err');
   }
   previousMillis = 0;
-  chartData.clear();
-  liveChartData.clear();
   }
 
   void onError(Object error) {

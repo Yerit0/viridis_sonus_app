@@ -57,7 +57,7 @@ class _BuildGrabacionScreen extends StatelessWidget {
                         width: context.width(),
                         padding:
                             EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                        margin: EdgeInsets.only(top: 55.0),
+                        margin: EdgeInsets.only(top: 10.0),
                         decoration: boxDecorationWithShadow(
                             borderRadius: BorderRadius.circular(30)),
                         child: Column(
@@ -65,9 +65,62 @@ class _BuildGrabacionScreen extends StatelessWidget {
                           children: [
                             16.height,
                             _tituloCaptura(registroCelular),
-                            _radialGauge(registroCelular),
-                            Divider(thickness: 3.0),
+                            _radialGauge(context, registroCelular),
                             _chart(registroCelular),
+                            Divider(thickness: 3.0),
+                            Container(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('Corrección de dB'),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      
+                                      IgnorePointer(
+                                        ignoring: registroCelular.isRecording,
+                                        child: AppButton(
+                                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                                          child: Icon(Icons.remove),
+                                          color: PrimaryColor,
+                                          textColor: Colors.white,
+                                          shapeBorder: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(30)),
+                                          onTap:(){
+                                            if(registroCelular.correccionRuido > -15){
+                                              registroCelular.correccionRuido --;
+                                            }
+                                            
+                                            print(registroCelular.correccionRuido);
+                                          }),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: context.width()*0.22,
+                                        child: Text('${registroCelular.correccionRuido}dB', 
+                                          style: boldTextStyle(size: 22, color: registroCelular.correccionRuido > 0 ? Colors.green : registroCelular.correccionRuido < 0 ? Colors.red : null))),
+                                      IgnorePointer(
+                                        ignoring: registroCelular.isRecording,
+                                        child: AppButton(
+                                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                                          child:Icon(Icons.add),
+                                          color: PrimaryColor,
+                                          textColor: Colors.white,
+                                          shapeBorder: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(30)),
+                                          onTap:(){
+                                            if(registroCelular.correccionRuido < 15){
+                                              registroCelular.correccionRuido ++;
+                                            }
+                                            print(registroCelular.correccionRuido);
+                                          }),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Divider(thickness: 3.0),
                             _botonesCaptura(context, registroCelular),
                             30.height
                           ],
@@ -88,14 +141,16 @@ class _BuildGrabacionScreen extends StatelessWidget {
 
   Container _chart(RegistroCelularProvider registroCelular) {
     return Container(
+      height: 200,
       child: SfCartesianChart(
         plotAreaBorderWidth: 0,
         primaryXAxis: NumericAxis(
-          title: AxisTitle(text: 'Segundos transcurridos'),
-          minimum: registroCelular.millis - 2,
+          title: AxisTitle(text: 'Segundos'),
+          //con minimum actualizas el Chart en tiempo real
+          minimum: registroCelular.isRecording ? registroCelular.millis - 10 : null,
           majorGridLines: const MajorGridLines(width: 0)),
         primaryYAxis: NumericAxis(
-          title: AxisTitle(text: 'DB'),
+          title: AxisTitle(text: 'dB'),
           minimum: 0,
           maximum: 100,
           axisLine: const AxisLine(width: 0),
@@ -106,7 +161,7 @@ class _BuildGrabacionScreen extends StatelessWidget {
             onRendererCreated: (ChartSeriesController controller){
               registroCelular.chartSeriesController = controller;
             },
-              dataSource: registroCelular.liveChartData,
+              dataSource: registroCelular.chartData,
               xAxisName: 'Time',
               yAxisName: 'dB',
               name: 'dB values over time',
@@ -117,8 +172,9 @@ class _BuildGrabacionScreen extends StatelessWidget {
       ),);
   } 
 
-  Container _radialGauge(RegistroCelularProvider registroCelular) {
+  Container _radialGauge(BuildContext context, RegistroCelularProvider registroCelular) {
     return Container(
+      height: context.height() * 0.30,
         child: SfRadialGauge(
             enableLoadingAnimation: true,
             animationDuration: 1000,
@@ -173,7 +229,7 @@ class _BuildGrabacionScreen extends StatelessWidget {
 Widget _botonesCaptura(
     BuildContext context, RegistroCelularProvider registroCelular) {
   return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
       AppButton(
           child: Icon(
@@ -190,20 +246,22 @@ Widget _botonesCaptura(
                 ? registroCelular.stopRecorder()
                 : registroCelular.start();
           }),
-      IgnorePointer(
-        ignoring: registroCelular.isRecording,
-        child: AppButton(
-            child: Icon(
-              Icons.replay_outlined,
-              size: 35.0,
-            ),
-            color: PrimaryColor,
-            shapeBorder:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            width: MediaQuery.of(context).size.width * 0.2,
-            height: MediaQuery.of(context).size.width * 0.2,
-            onTap: () {}),
-      ),
+      //IgnorePointer(
+      //  ignoring: registroCelular.isRecording,
+      //  child: AppButton(
+      //      child: Icon(
+      //        Icons.replay_outlined,
+      //        size: 35.0,
+      //      ),
+      //      color: PrimaryColor,
+      //      shapeBorder:
+      //          RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      //      width: MediaQuery.of(context).size.width * 0.2,
+      //      height: MediaQuery.of(context).size.width * 0.2,
+      //      onTap: () {
+      //        registroCelular.reset();
+      //      }),
+      //),
       IgnorePointer(
         ignoring: registroCelular.isRecording,
         child: AppButton(
