@@ -49,7 +49,7 @@ class RegistrosService extends ChangeNotifier {
     if(!registrosResponse.success){
       return registrosResponse.error['message'];
     } else {
-      this.registros = registrosResponse.result!.items!;
+      this.registros = registrosResponse.result.items!;
       notifyListeners();
     }
   }

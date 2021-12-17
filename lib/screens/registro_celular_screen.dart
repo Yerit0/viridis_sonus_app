@@ -5,6 +5,8 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:viridis_sonus_app/models/models.dart';
 import 'package:viridis_sonus_app/providers/providers.dart';
+import 'package:viridis_sonus_app/services/notification_service.dart';
+import 'package:viridis_sonus_app/services/services.dart';
 import 'package:viridis_sonus_app/utils/widgets/Colors.dart';
 
 class RegistroCelularScreen extends StatelessWidget {
@@ -274,8 +276,47 @@ Widget _botonesCaptura(
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
             width: MediaQuery.of(context).size.width * 0.2,
             height: MediaQuery.of(context).size.width * 0.2,
-            onTap: () {
-              _mostrarAlerta(context);
+            onTap: () async {
+              final usuarioService = Provider.of<UsuarioService>(context, listen: false);
+              final registrosService = Provider.of<RegistrosService>(context, listen: false);
+              final geolocalizacionService = Provider.of<GeolocalizacionService>(context, listen: false);
+              
+              String? errorMessage = registroCelular.obtenerTiempoDeGrabacion();
+              if(errorMessage != null){
+                NotificationsService.showSnackbar(errorMessage);
+              } else {
+                errorMessage = registroCelular.obtenerMedia();
+                if(errorMessage != null){
+                  NotificationsService.showSnackbar(errorMessage);
+                } else {
+                  errorMessage = await geolocalizacionService.getPosicion();
+                  if(errorMessage != null){
+                    NotificationsService.showSnackbar(errorMessage);
+                  } else {
+                    registroCelular.latitud = geolocalizacionService.latitud;
+                    registroCelular.longitud = geolocalizacionService.longitud;
+                    registroCelular.investigador = usuarioService.infoUsuario!.roles.contains('Investigador') ? true : false;
+
+                    final String? registroMessage = await registrosService.crearRegistro(
+                      registroCelular.minima!, 
+                      registroCelular.maxima!, 
+                      registroCelular.media!, 
+                      registroCelular.claseSonometroId, 
+                      registroCelular.interior, 
+                      registroCelular.latitud!, 
+                      registroCelular.longitud!, 
+                      registroCelular.investigador!);
+
+                      if(registroMessage == null ){
+                        NotificationsService.showSnackbar('Registro Creado');
+                        Navigator.pop(context);
+                      } else {
+                        NotificationsService.showSnackbar(registroMessage);
+                      }
+                  }
+                }
+              }
+              //_mostrarAlerta(context);
             }),
       ),
     ],

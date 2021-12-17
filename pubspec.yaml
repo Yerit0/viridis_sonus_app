@@ -40,6 +40,7 @@ dependencies:
   noise_meter: ^3.0.3
   provider: ^6.0.1
   shared_preferences: ^2.0.8
+  url_launcher: ^6.0.17
   syncfusion_flutter_gauges: ^19.3.59
   syncfusion_flutter_charts: ^19.1.67
 
