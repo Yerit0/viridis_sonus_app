@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       theme: AppThemeData.lightTheme,
       title: 'Viridis Sonus',
       routes: routes(),
-      initialRoute: 'celular',
+      initialRoute: 'login',
       scaffoldMessengerKey: NotificationsService.messengerKey,
     );
   }

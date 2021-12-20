@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:viridis_sonus_app/models/models.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:viridis_sonus_app/services/services.dart';
 import 'package:viridis_sonus_app/widgets/registro_widget.dart';
 
@@ -42,77 +42,61 @@ class HomeScreen extends StatelessWidget {
                         onPressed: (){},)
                         //onPressed: () => WAMyProfileScreen().launch(context),),
                     ),
-                    GestureDetector(
-                      onTap: (){
-                              showDialog(
-                                context: context, 
-                                barrierDismissible: true,
-                                builder: (_) =>AlertDialog(
-                                actions: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    width: 80,
-                                    height: 80,
-                                    child: Center(
-                                      child: Text('Calendario'),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            );
-                          },
-                      child: Container(
-                        width: 200,
-                        height: 40,
-                        decoration: boxDecorationWithRoundedCorners(
-                          backgroundColor: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey),
-                        ),
-                        alignment: Alignment.center,
-                        child: Stack(
-                          alignment: AlignmentDirectional.topEnd,
-                          children: [
-                            Icon(Icons.date_range, 
-                              color: Colors.black,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    //GestureDetector(
+                    //  onTap: (){
+                    //          showDialog(
+                    //            context: context, 
+                    //            barrierDismissible: true,
+                    //            builder: (_) =>AlertDialog(
+                    //            actions: [
+                    //              Container(
+                    //                alignment: Alignment.center,
+                    //                width: 80,
+                    //                height: 80,
+                    //                child: Center(
+                    //                  child: Text('Calendario'),
+                    //                ),
+                    //              ),
+                    //            ],
+                    //          )
+                    //        );
+                    //      },
+                    //  child: Container(
+                    //    width: 200,
+                    //    height: 40,
+                    //    decoration: boxDecorationWithRoundedCorners(
+                    //      backgroundColor: Colors.white,
+                    //      borderRadius: BorderRadius.circular(12),
+                    //      border: Border.all(color: Colors.grey),
+                    //    ),
+                    //    alignment: Alignment.center,
+                    //    child: Stack(
+                    //      alignment: AlignmentDirectional.topEnd,
+                    //      children: [
+                    //        Icon(Icons.date_range, 
+                    //          color: Colors.black,
+                    //        ),
+                    //      ],
+                    //    ),
+                    //  ),
+                    //),
                     Container(
                       width: 40,
                       height: 40,
                       decoration: boxDecorationWithRoundedCorners(
                         backgroundColor: Colors.white,
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey),
+                        border: Border.all(color: Colors.grey.withOpacity(0.2)),
                       ),
                       alignment: Alignment.center,
                       child: Stack(
                         alignment: AlignmentDirectional.topEnd,
                         children: [
                           IconButton(
-                            icon: Icon(Icons.restore_rounded), 
+                            icon: Icon(Icons.language_outlined), 
                             color: Colors.black,
-                            onPressed: (){
-                              showDialog(
-                                context: context, 
-                                barrierDismissible: true,
-                                builder: (_) =>AlertDialog(
-                                actions: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    width: 80,
-                                    height: 80,
-                                    child: Center(
-                                      child: Text('Reiniciar Calendario'),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            );
-                          },
+                            onPressed: () async { 
+                              if (!await launch('https://viridussonus.cl/')) throw 'Could not launch url';}
                           ),
                         ],
                       ),

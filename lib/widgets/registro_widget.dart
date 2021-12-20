@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:viridis_sonus_app/models/models.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RegistroWidget extends StatelessWidget {
-
+  final _urlMap = 'https://apis.viridussonus.cl/RegistrosSonido/MapsFull?tok=b3R0b3VsYnJpY2g=&claseSonometro=0&fechaDesde=&fechaHasta=&maxResultCount=10&skipCount=0&tipoUsuario=0&usuario=0&intensidad=0&IdRegistro=';
   final Registro? registroModel;
 
   RegistroWidget({this.registroModel});
@@ -17,6 +18,9 @@ class RegistroWidget extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 16,left: 16,right: 16),
       decoration: boxDecorationRoundedWithShadow(16, backgroundColor: Colors.white),
       child: ListTile(
+        onTap: () async {
+          if (!await launch('$_urlMap${registroModel!.id}')) throw 'Could not launch url';
+        },
         tileColor: Colors.red,
         enabled: true,
         contentPadding: EdgeInsets.zero,
@@ -28,11 +32,7 @@ class RegistroWidget extends StatelessWidget {
             boxShape: BoxShape.circle,
             backgroundColor: _color .withOpacity(0.1),
           ),
-          child: ImageIcon(
-            AssetImage('assets/images/wa_voucher.png'),
-            size: 24,
-            color: _color,
-          ),
+          child: Icon(Icons.location_on_outlined, color: Colors.green,)
         ),
         title: RichTextWidget(
           list: [
