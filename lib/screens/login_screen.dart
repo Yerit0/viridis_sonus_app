@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:viridis_sonus_app/providers/providers.dart';
 import 'package:viridis_sonus_app/services/auth_services.dart';
 import 'package:viridis_sonus_app/services/services.dart';
@@ -37,7 +38,7 @@ class LoginScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            50.height,
+                            130.height,
                             ChangeNotifierProvider(
                               create: ( _ ) => LoginFormProvider(),
                               child: _LoginForm(),
@@ -45,16 +46,21 @@ class LoginScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Container(
-                        alignment: Alignment.center,
-                        height: 100,
-                        width: 100,
-                        decoration: boxDecorationRoundedWithShadow(30),
-                        child: Image.asset(
-                          'assets/images/vs_app_logo.png',
-                          height: 60,
-                          width: 60,
-                          fit: BoxFit.cover,
+                      GestureDetector(
+                        onTap: () async {
+                          if (!await launch('https://viridussonus.cl/')) throw 'Could not launch url';
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 230,
+                          width: 230,
+                          decoration: boxDecorationRoundedWithShadow(30),
+                          child: Image.asset(
+                            'assets/images/login_image.png',
+                            height: 230,
+                            width: 230,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       )
                     ],

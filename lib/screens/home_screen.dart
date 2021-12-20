@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:viridis_sonus_app/screens/screens.dart';
 import 'package:viridis_sonus_app/services/services.dart';
 import 'package:viridis_sonus_app/widgets/registro_widget.dart';
 
@@ -11,6 +12,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final registrosService = Provider.of<RegistrosService>(context);
+    final authService = Provider.of<AuthService>(context);
 
     return Scaffold(
       body: Container(
@@ -36,10 +38,15 @@ class HomeScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: Colors.grey),
                       ),
-                      child: IconButton(
-                        
-                        icon: Icon(Icons.person, color: Colors.black),
-                        onPressed: (){},)
+                      child: RotatedBox(
+                        quarterTurns: 2,
+                        child: IconButton(
+                          icon: Icon(Icons.logout_outlined, color: Colors.black),
+                          onPressed: ()async{
+                            await authService.logout();
+                            LoginScreen().launch(context, isNewTask: true);
+                          },),
+                      )
                         //onPressed: () => WAMyProfileScreen().launch(context),),
                     ),
                     //GestureDetector(
@@ -86,7 +93,7 @@ class HomeScreen extends StatelessWidget {
                       decoration: boxDecorationWithRoundedCorners(
                         backgroundColor: Colors.white,
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                        border: Border.all(color: Colors.grey),
                       ),
                       alignment: Alignment.center,
                       child: Stack(

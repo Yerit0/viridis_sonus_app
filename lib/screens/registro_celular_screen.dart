@@ -46,13 +46,13 @@ class _BuildGrabacionScreen extends StatelessWidget {
             child: Center(
                 child: Column(
               children: [
-                30.height,
+                50.height,
                 Text(
                   'Registrar Medición',
                   style: boldTextStyle(size: 24),
                 ),
                 Container(
-                  margin: EdgeInsets.all(5),
+                  margin: EdgeInsets.symmetric(horizontal: 5),
                   child: Stack(
                     alignment: Alignment.topCenter,
                     children: [
