@@ -11,4 +11,6 @@ class NotificationsService {
 
     messengerKey.currentState!.showSnackBar(snackBar);
   }
+
 }
+  

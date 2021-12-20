@@ -82,3 +82,17 @@ class RegistrosService extends ChangeNotifier {
   }
 
 }
+
+///TODO: implementar timeout
+///try {
+///      var response = await Http.get("YourUrl").timeout(const Duration(seconds: 3));
+///      if(response.statusCode == 200){
+///         print("Success");
+///      }else{
+///         print("Something wrong");
+///      }
+///} on TimeoutException catch (e) {
+///    print('Timeout');
+///} on Error catch (e) {
+///    print('Error: $e');
+///}

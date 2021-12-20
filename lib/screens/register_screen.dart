@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:viridis_sonus_app/providers/register_form_provider.dart';
-import 'package:viridis_sonus_app/screens/login_screen.dart';
+import 'package:viridis_sonus_app/screens/screens.dart';
 import 'package:viridis_sonus_app/services/auth_services.dart';
 import 'package:viridis_sonus_app/services/services.dart';
 import 'package:viridis_sonus_app/utils/widgets/Colors.dart';
@@ -227,6 +227,8 @@ class _RegisterForm extends StatelessWidget {
                         final authService = Provider.of<AuthService>(context, listen: false);
     
                         if(!registerForm.isValidForm()) return;
+
+                        registerForm.isLoading = true;
     
                         final String? erroMessage = await authService.crearUsuario(
                           registerForm.nombre,
@@ -238,10 +240,22 @@ class _RegisterForm extends StatelessWidget {
                         );
     
                         if (erroMessage == null) {
-                            Navigator.pushReplacementNamed(context, 'login');
+                          showADialogCustom(context, onAccept: (context) { LoginScreen().launch(context, isNewTask: true); },
+                          dialogType: DialogType.ACCEPT,
+                          positiveText: 'Aceptar',
+                          title: '¡Registro creado!',
+                          barrierDismissible: false,
+                          );
+                          registerForm.isLoading = false;
+                          
                           } else {
-                            NotificationsService.showSnackbar(erroMessage);
-                            registerForm.isLoading = false;
+                            showADialogCustom(context, onAccept: (context) {},
+                              dialogType: DialogType.DELETE,
+                              positiveText: 'Aceptar',
+                              title: erroMessage,
+                              barrierDismissible: false,
+                              );
+                              registerForm.isLoading = false;
                           }
     
                         

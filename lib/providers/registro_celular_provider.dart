@@ -7,6 +7,7 @@ import 'package:viridis_sonus_app/models/models.dart';
 
 class RegistroCelularProvider extends ChangeNotifier{
   bool _isRecording = false;
+  bool _isLoading = false;
   StreamSubscription<NoiseReading>? _noiseSubscription;
   late NoiseMeter _noiseMeter;
   late int previousMillis;
@@ -23,7 +24,7 @@ class RegistroCelularProvider extends ChangeNotifier{
   double? media;
   double? minima;
   int claseSonometroId = 1;
-  bool interior = false;
+  bool _interior = false;
   double? latitud;
   double? longitud;
   bool? investigador;
@@ -32,9 +33,21 @@ class RegistroCelularProvider extends ChangeNotifier{
 
   ChartSeriesController? chartSeriesController;
 
+  bool get interior => _interior;
+  set interior(bool value){
+    _interior = value;
+    notifyListeners();
+  }
+
   bool get isRecording => _isRecording;
   set isRecording(bool value){
     _isRecording = value;
+    notifyListeners();
+  }
+
+  bool get isLoading => _isLoading;
+  set isLoading(bool value){
+    _isLoading = value;
     notifyListeners();
   }
 
@@ -82,7 +95,7 @@ class RegistroCelularProvider extends ChangeNotifier{
       if(chartData.length > 0){
         tiempo = chartData.last.frames;
         if(tiempo < duracionMinimaDeGrabacion){
-          return 'Debes grabar mínimo 1 minuto';
+          return 'Debes grabar mínimo $duracionMinimaDeGrabacion segundos';
         }
       }
     }

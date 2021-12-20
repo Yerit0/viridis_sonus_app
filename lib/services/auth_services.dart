@@ -26,13 +26,10 @@ class AuthService extends ChangeNotifier {
                                       body: json.encode(authData));
     final Map<String, dynamic> decodedResp = json.decode(respuesta.body);
 
-    if (respuesta.statusCode == 201) {
-      return 'Usuario creado!';
-    } else {
+    if (respuesta.statusCode != 200) {
       return decodedResp['error']['message'];
   }
   }
-
   Future<String?> loginUsuario(String usernameOrEmail, String password) async {
 
     final Map<String, dynamic> authData = {
@@ -52,11 +49,9 @@ class AuthService extends ChangeNotifier {
     }
 
     if (respuesta.statusCode == 200) {
-      //print(decodedResp['result']);
       await storage.write(key: 'token', value : decodedResp['result']);
       return null;
     } else {
-      //print(decodedResp['error']['details']);
       return decodedResp['error']['details'];
   }
 

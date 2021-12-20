@@ -261,16 +261,23 @@ class _RegistrarSonidoForm extends StatelessWidget {
                         registroInvestigador.investigador);
 
                       if(registroMessage == null ){
-                        NotificationsService.showSnackbar('Registro Creado');
-                        Navigator.pop(context);
+                        showADialogCustom(context, onAccept: (context) => { finish(context)},
+                        dialogType: DialogType.ACCEPT,
+                        positiveText: 'Aceptar',
+                        title: '¡Gracias por tu aporte!',
+                        barrierDismissible: false,
+                        );
+                        registroInvestigador.isLoading = false;
                       } else {
-                        NotificationsService.showSnackbar(registroMessage);
+                        showADialogCustom(context, onAccept: (context) {},
+                        dialogType: DialogType.DELETE,
+                        positiveText: 'Aceptar',
+                        title: registroMessage,
+                        barrierDismissible: false,
+                        );
+                        registroInvestigador.isLoading = false;
                       }
-
-                      //Future.delayed(const Duration(seconds: 5), (){
-                      //  registroInvestigador.isLoading = false;
-                      //});
-                      
+                     
                     } else {
                       NotificationsService.showSnackbar(erroMessage);
                       registroInvestigador.isLoading = false;

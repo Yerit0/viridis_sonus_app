@@ -25,15 +25,13 @@ class UsuarioService extends ChangeNotifier {
     };
     final url = Uri.https(this._baseUrl, endpoint, );
     final response = await http.post(url, headers: headers);
-    print(response.body);
     return response.body;
   }
 
   getInfoUsario () async {
     String _endpoint = 'api/services/app/RegistrosSonido/InfoUsuario';
     final jsonData = await this._getJsonData(_endpoint);
-    //TODO: Borrar print
-    print(jsonData);
+
 
     final InfoUsuarioResponse infoUsuarioResponse = InfoUsuarioResponse.fromJson(jsonData);
 

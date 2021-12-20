@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:viridis_sonus_app/routes.dart';
 import 'package:viridis_sonus_app/services/services.dart';
 import 'package:viridis_sonus_app/utils/theme/AppTheme.dart';
 
-void main() => runApp(AppState());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await initialize();
+  
+  runApp(AppState());
+  }
 
 
 // Dejamos en la instancia mas alta de la aplicacion
@@ -35,7 +42,7 @@ class MyApp extends StatelessWidget {
       theme: AppThemeData.lightTheme,
       title: 'Viridis Sonus',
       routes: routes(),
-      initialRoute: 'login',
+      initialRoute: 'celular',
       scaffoldMessengerKey: NotificationsService.messengerKey,
     );
   }

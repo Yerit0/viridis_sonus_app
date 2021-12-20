@@ -88,6 +88,7 @@ class _LoginForm extends StatelessWidget {
                   Text("Correo Electrónico", style: boldTextStyle(size: 14)),
                   8.height,
                   AppTextField(
+                    controller: loginForm.email != '' ? TextEditingController(text: loginForm.email) : null,
                     enabled: !loginForm.isLoading,
                     decoration: inputDecoration(
                       hint: 'Ingresa tu correo electrónico aquí', 
@@ -107,6 +108,7 @@ class _LoginForm extends StatelessWidget {
                   Text("Contraseña", style: boldTextStyle(size: 14)),
                   8.height,
                   AppTextField(
+                    controller: loginForm.password != '' ? TextEditingController(text: loginForm.password) : null,
                     enabled: !loginForm.isLoading,
                     decoration: inputDecoration(
                       hint: 'Ingresa tu contraseña aquí', 
@@ -122,11 +124,20 @@ class _LoginForm extends StatelessWidget {
                       : 'la Contraseña debe ser de 6 caracteres mínimo';
                     },
                   ),
-                  //16.height,
-                  //Align(
-                  //  alignment: Alignment.centerRight,
-                  //  child: Text("¿Olvidó su contraseña?", style: primaryTextStyle()),
-                  //),
+                  16.height,
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text("Recordar", style: primaryTextStyle()),
+                        Switch(value: loginForm.isActiveSwitch, 
+                        onChanged: (value){
+                          loginForm.isActiveSwitch = value;
+                        }, activeColor: PrimaryColor,),
+                      ],
+                    ),
+                  ),
                   30.height,
                   loginForm.isLoading
                   ? IgnorePointer(
@@ -158,6 +169,7 @@ class _LoginForm extends StatelessWidget {
                         final String? erroMessage = await authService.loginUsuario(loginForm.email, loginForm.password);
                         
                         if (erroMessage == null) {
+                          if(!loginForm.isActiveSwitch){loginForm.noRecordarUsuario();}
                           Navigator.pushReplacementNamed(context, 'dashboard');
                         } else {
                           NotificationsService.showSnackbar(erroMessage);

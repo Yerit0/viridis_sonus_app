@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +46,7 @@ class _BuildGrabacionScreen extends StatelessWidget {
             child: Center(
                 child: Column(
               children: [
-                50.height,
+                30.height,
                 Text(
                   'Registrar Medición',
                   style: boldTextStyle(size: 24),
@@ -69,62 +70,12 @@ class _BuildGrabacionScreen extends StatelessWidget {
                             _tituloCaptura(registroCelular),
                             _radialGauge(context, registroCelular),
                             _chart(registroCelular),
-                            Divider(thickness: 3.0),
-                            Container(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text('Corrección de dB'),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      
-                                      IgnorePointer(
-                                        ignoring: registroCelular.isRecording,
-                                        child: AppButton(
-                                          padding: EdgeInsets.symmetric(vertical: 5.0),
-                                          child: Icon(Icons.remove),
-                                          color: PrimaryColor,
-                                          textColor: Colors.white,
-                                          shapeBorder: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(30)),
-                                          onTap:(){
-                                            if(registroCelular.correccionRuido > -15){
-                                              registroCelular.correccionRuido --;
-                                            }
-                                            
-                                            print(registroCelular.correccionRuido);
-                                          }),
-                                      ),
-                                      Container(
-                                        alignment: Alignment.center,
-                                        width: context.width()*0.22,
-                                        child: Text('${registroCelular.correccionRuido}dB', 
-                                          style: boldTextStyle(size: 22, color: registroCelular.correccionRuido > 0 ? Colors.green : registroCelular.correccionRuido < 0 ? Colors.red : null))),
-                                      IgnorePointer(
-                                        ignoring: registroCelular.isRecording,
-                                        child: AppButton(
-                                          padding: EdgeInsets.symmetric(vertical: 5.0),
-                                          child:Icon(Icons.add),
-                                          color: PrimaryColor,
-                                          textColor: Colors.white,
-                                          shapeBorder: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(30)),
-                                          onTap:(){
-                                            if(registroCelular.correccionRuido < 15){
-                                              registroCelular.correccionRuido ++;
-                                            }
-                                            print(registroCelular.correccionRuido);
-                                          }),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Divider(thickness: 3.0),
+                            _switchButton(registroCelular),
+                            10.height,
+                            _correccionRuido(registroCelular, context),
+                            10.height,
                             _botonesCaptura(context, registroCelular),
-                            30.height
+                            10.height
                           ],
                         ),
                       ),
@@ -141,9 +92,89 @@ class _BuildGrabacionScreen extends StatelessWidget {
     );
   }
 
+  Container _correccionRuido(RegistroCelularProvider registroCelular, BuildContext context) {
+    return Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: Colors.grey.withOpacity(0.2)
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Corrección de dB'),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    
+                                    IgnorePointer(
+                                      ignoring: registroCelular.isRecording,
+                                      child: AppButton(
+                                        padding: EdgeInsets.symmetric(vertical: 5.0),
+                                        child: Icon(Icons.remove),
+                                        color: PrimaryColor,
+                                        textColor: Colors.white,
+                                        shapeBorder: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(30)),
+                                        onTap:(){
+                                          if(registroCelular.correccionRuido > -15){
+                                            registroCelular.correccionRuido --;
+                                          }
+                                      
+                                        }),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.center,
+                                      width: context.width()*0.22,
+                                      child: Text('${registroCelular.correccionRuido}dB', 
+                                        style: boldTextStyle(size: 22, color: registroCelular.correccionRuido > 0 ? Colors.green : registroCelular.correccionRuido < 0 ? Colors.red : null))),
+                                    IgnorePointer(
+                                      ignoring: registroCelular.isRecording,
+                                      child: AppButton(
+                                        padding: EdgeInsets.symmetric(vertical: 5.0),
+                                        child:Icon(Icons.add),
+                                        color: PrimaryColor,
+                                        textColor: Colors.white,
+                                        shapeBorder: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(30)),
+                                        onTap:(){
+                                          if(registroCelular.correccionRuido < 15){
+                                            registroCelular.correccionRuido ++;
+                                          }
+                                        }),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+  }
+
+  Container _switchButton(RegistroCelularProvider registroCelular) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.grey.withOpacity(0.2)
+        ),
+      ),
+      child: IgnorePointer(
+        ignoring: registroCelular.isRecording,
+        child: SwitchListTile(value: registroCelular.interior,
+          activeColor: PrimaryColor,
+          title: Text('Interior', style: boldTextStyle(size: 18),),
+          onChanged: (value){
+            registroCelular.interior = value;
+          }),
+      ),
+    );
+  }
+
   Container _chart(RegistroCelularProvider registroCelular) {
     return Container(
-      height: 200,
+      padding: EdgeInsets.only(right: 30),
+      height: 190,
       child: SfCartesianChart(
         plotAreaBorderWidth: 0,
         primaryXAxis: NumericAxis(
@@ -176,8 +207,10 @@ class _BuildGrabacionScreen extends StatelessWidget {
 
   Container _radialGauge(BuildContext context, RegistroCelularProvider registroCelular) {
     return Container(
-      height: context.height() * 0.30,
+        //color: Colors.red,
+        height: context.height() * 0.32,
         child: SfRadialGauge(
+
             enableLoadingAnimation: true,
             animationDuration: 1000,
             axes: <RadialAxis>[
@@ -233,70 +266,67 @@ Widget _botonesCaptura(
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
-      AppButton(
-          child: Icon(
-            registroCelular.isRecording ? Icons.stop : Icons.play_arrow,
-            size: 35.0,
-          ),
-          color: registroCelular.isRecording ? SecundaryColor : PrimaryColor,
-          shapeBorder:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-          width: MediaQuery.of(context).size.width * 0.2,
-          height: MediaQuery.of(context).size.width * 0.2,
-          onTap: () {
-            registroCelular.isRecording
-                ? registroCelular.stopRecorder()
-                : registroCelular.start();
-          }),
-      //IgnorePointer(
-      //  ignoring: registroCelular.isRecording,
-      //  child: AppButton(
-      //      child: Icon(
-      //        Icons.replay_outlined,
-      //        size: 35.0,
-      //      ),
-      //      color: PrimaryColor,
-      //      shapeBorder:
-      //          RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      //      width: MediaQuery.of(context).size.width * 0.2,
-      //      height: MediaQuery.of(context).size.width * 0.2,
-      //      onTap: () {
-      //        registroCelular.reset();
-      //      }),
-      //),
       IgnorePointer(
-        ignoring: registroCelular.isRecording,
+        ignoring: registroCelular.isLoading,
         child: AppButton(
             child: Icon(
-              Icons.save,
+              registroCelular.isRecording ? Icons.stop : Icons.play_arrow,
               size: 35.0,
             ),
+            color: registroCelular.isRecording ? SecundaryColor : PrimaryColor,
+            shapeBorder:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+            width: MediaQuery.of(context).size.width * 0.2,
+            height: MediaQuery.of(context).size.width * 0.2,
+            onTap: () {
+              registroCelular.isRecording
+                ? registroCelular.stopRecorder()
+                : registroCelular.start();
+            }),
+      ),
+      IgnorePointer(
+        ignoring: registroCelular.isRecording,
+        child: registroCelular.isLoading 
+        ?AppButton(
+            child: CupertinoActivityIndicator(),
             color: PrimaryColor,
             shapeBorder:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
             width: MediaQuery.of(context).size.width * 0.2,
             height: MediaQuery.of(context).size.width * 0.2,
-            onTap: () async {
+            onTap:(){})
+        : AppButton(
+            child: Icon(
+              Icons.save,
+              size: 35.0,),
+            color: PrimaryColor,
+            shapeBorder:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+            width: MediaQuery.of(context).size.width * 0.2,
+            height: MediaQuery.of(context).size.width * 0.2,
+            onTap: registroCelular.isLoading ? null : () async {
               final usuarioService = Provider.of<UsuarioService>(context, listen: false);
               final registrosService = Provider.of<RegistrosService>(context, listen: false);
               final geolocalizacionService = Provider.of<GeolocalizacionService>(context, listen: false);
-              
+              registroCelular.isLoading = true;
               String? errorMessage = registroCelular.obtenerTiempoDeGrabacion();
               if(errorMessage != null){
                 NotificationsService.showSnackbar(errorMessage);
+                registroCelular.isLoading = false;
               } else {
                 errorMessage = registroCelular.obtenerMedia();
                 if(errorMessage != null){
                   NotificationsService.showSnackbar(errorMessage);
+                  registroCelular.isLoading = false;
                 } else {
                   errorMessage = await geolocalizacionService.getPosicion();
                   if(errorMessage != null){
                     NotificationsService.showSnackbar(errorMessage);
+                    registroCelular.isLoading = false;
                   } else {
                     registroCelular.latitud = geolocalizacionService.latitud;
                     registroCelular.longitud = geolocalizacionService.longitud;
                     registroCelular.investigador = usuarioService.infoUsuario!.roles.contains('Investigador') ? true : false;
-
                     final String? registroMessage = await registrosService.crearRegistro(
                       registroCelular.minima!, 
                       registroCelular.maxima!, 
@@ -308,47 +338,30 @@ Widget _botonesCaptura(
                       registroCelular.investigador!);
 
                       if(registroMessage == null ){
-                        NotificationsService.showSnackbar('Registro Creado');
-                        Navigator.pop(context);
+                        showADialogCustom(context, onAccept: (context) => { finish(context)},
+                        dialogType: DialogType.ACCEPT,
+                        positiveText: 'Aceptar',
+                        title: '¡Gracias por tu aporte!',
+                        barrierDismissible: false,
+                        );
+                        registroCelular.isLoading = false;
+                        
                       } else {
-                        NotificationsService.showSnackbar(registroMessage);
+                        showADialogCustom(context, onAccept: (context) {},
+                        dialogType: DialogType.DELETE,
+                        positiveText: 'Aceptar',
+                        title: registroMessage,
+                        barrierDismissible: false,
+                        );
+                        registroCelular.isLoading = false;
                       }
                   }
                 }
               }
-              //_mostrarAlerta(context);
             }),
       ),
     ],
   );
 }
 
-void _mostrarAlerta(BuildContext context) {
-  showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(
-            'Titulo',
-            textAlign: TextAlign.center,
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Mensaje de la caja de alerta'),
-              SizedBox(
-                height: 30.0,
-              ),
-              FlutterLogo(size: 100.0),
-            ],
-          ),
-          actions: [
-            TextButton(
-                onPressed: () => Navigator.of(context).pop(), child: Text('Ok'))
-          ],
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        );
-      });
-}
+

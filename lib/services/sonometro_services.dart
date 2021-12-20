@@ -23,15 +23,13 @@ class SonometroService extends ChangeNotifier {
     };
     final url = Uri.https(this._baseUrl, endpoint, );
     final response = await http.post(url, headers: headers);
-    print(response.body);
     return response.body;
   }
   
   getSonometros() async {
     String _endpoint = 'api/services/app/RegistrosSonido/TiposSonometros';
     final jsonData = await this._getJsonData(_endpoint);
-    //TODO: Borrar print
-    print(jsonData);
+
 
     final ListadoSonometroResponse sonometrosResponse = ListadoSonometroResponse.fromJson(jsonData);
 
