@@ -126,9 +126,7 @@ class HomeScreen extends StatelessWidget {
                 
                 registrosService.registros.length != 0
                 ? Column(
-                  children: registrosService.registros.map((registrosItem) {
-                    return RegistroWidget(registroModel: registrosItem,);
-                  }).toList()
+                  children: [RegistroWidget(listRegistros: registrosService.registros, onNextPage: () => registrosService.getRegistros()),]
                 )
                 : Center(child: CupertinoActivityIndicator()),
               ],
