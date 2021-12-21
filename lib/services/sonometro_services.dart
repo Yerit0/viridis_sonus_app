@@ -11,9 +11,9 @@ class SonometroService extends ChangeNotifier {
   
   List<Sonometro> listadoSonometro = [];
 
-  SonometroService(){
-    this.getSonometros();
-  }
+  //SonometroService(){
+  //  this.getSonometros();
+  //}
 
   Future<String> _getJsonData( String endpoint) async {
     final token = await storage.read(key: 'token') ?? '';
@@ -42,6 +42,10 @@ class SonometroService extends ChangeNotifier {
 
 
 
+  }
+
+  logout(){
+    listadoSonometro.clear();
   }
   
 }

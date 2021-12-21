@@ -45,6 +45,9 @@ class HomeScreen extends StatelessWidget {
                           icon: Icon(Icons.logout_outlined, color: Colors.black),
                           onPressed: ()async{
                             await authService.logout();
+                            await Provider.of<SonometroService>(context, listen: false).logout();
+                            await Provider.of<UsuarioService>(context, listen: false).logout();
+                            await Provider.of<RegistrosService>(context, listen: false).logout();
                             LoginScreen().launch(context, isNewTask: true);
                           },),
                       )

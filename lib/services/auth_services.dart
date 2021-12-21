@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:viridis_sonus_app/main.dart';
 import 'package:viridis_sonus_app/services/usuario_services.dart';
 
 class AuthService extends ChangeNotifier {
@@ -60,6 +61,7 @@ class AuthService extends ChangeNotifier {
 
   Future logout()async{
     await storage.delete(key: 'token');
+    
     return;
   }
 

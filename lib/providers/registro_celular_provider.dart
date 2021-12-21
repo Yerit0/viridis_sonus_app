@@ -105,8 +105,12 @@ class RegistroCelularProvider extends ChangeNotifier{
       isRecording = true;
     }
     if(!noiseReading.maxDecibel.isNaN && !noiseReading.meanDecibel.isNaN){
-      maxDB = noiseReading.maxDecibel + (reducirRuido + correccionRuido);
-      mediaDB = noiseReading.maxDecibel;
+      if(!noiseReading.maxDecibel.isInfinite && !noiseReading.meanDecibel.isInfinite){
+        if(!noiseReading.maxDecibel.isNegative && !noiseReading.meanDecibel.isNegative){
+          maxDB = noiseReading.maxDecibel + (reducirRuido + correccionRuido);
+          mediaDB = noiseReading.maxDecibel;
+        }
+      }
     }
 
 

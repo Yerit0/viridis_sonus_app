@@ -13,9 +13,9 @@ class UsuarioService extends ChangeNotifier {
 
   Usuario? infoUsuario;
 
-  UsuarioService(){
-    this.getInfoUsario();
-  }
+  //UsuarioService(){
+  //  this.getInfoUsario();
+  //}
 
   Future<String> _getJsonData( String endpoint) async {
     final token = await storage.read(key: 'token') ?? '';
@@ -41,6 +41,10 @@ class UsuarioService extends ChangeNotifier {
       this.infoUsuario = infoUsuarioResponse.result;
       notifyListeners();
     }
+  }
+
+  logout(){
+    infoUsuario = null;
   }
 
 }

@@ -19,8 +19,22 @@ class DashboardScreen extends StatelessWidget {
   }
 }
 
-class _BuildDashboard extends StatelessWidget {
+class _BuildDashboard extends StatefulWidget {
   
+  @override
+  State<_BuildDashboard> createState() => _BuildDashboardState();
+}
+  
+class _BuildDashboardState extends State<_BuildDashboard> {
+
+  @override
+  void initState() {
+    Provider.of<UsuarioService>(context, listen: false).getInfoUsario();
+    Provider.of<RegistrosService>(context, listen: false).getRegistros();
+    Provider.of<SonometroService>(context, listen: false).getSonometros();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final tabPage = Provider.of<TabPageProvider>(context);

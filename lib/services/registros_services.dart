@@ -16,9 +16,9 @@ class RegistrosService extends ChangeNotifier {
   int _skipCount = 0;
   List<Registro> registros = [];
 
-  RegistrosService(){
-    this.getRegistros();
-  }
+  //RegistrosService(){
+  //  this.getRegistros();
+  //}
 
   Future<String?> _getJsonData( String endpoint, Map<String, dynamic> body) async {
     final token = await storage.read(key: 'token') ?? '';
@@ -32,7 +32,7 @@ class RegistrosService extends ChangeNotifier {
       return response.body;
     }
 
-  getRegistros({int? usuario}) async {
+  getRegistros() async {
     String _endpoint = 'api/services/app/RegistrosSonido/GetAll';
     final Map<String, dynamic> bodyData = {
       "SkipCount": _skipCount,
@@ -41,7 +41,7 @@ class RegistrosService extends ChangeNotifier {
       "FechaDesde": null,
       "FechaHasta": null,
       "TipoUsuario": 0,
-      "Usuario": usuario ?? 0,
+      "Usuario": 0,
       "Intensidad": 0
     };
     
@@ -80,17 +80,18 @@ class RegistrosService extends ChangeNotifier {
     final Map<String, dynamic> decodedResponse = jsonDecode(jsonData!);
 
     if( decodedResponse['success'] == true ){
-      if(investigador){
+        await logout();
         await getRegistros();
-      } else {
-        await getRegistros(usuario: idUsuario);
-      }
-      
       return null;
     } else {
       return decodedResponse['error']['message'];
     }
     
+  }
+
+  logout(){
+    _skipCount = 0;
+    registros.clear();
   }
 
 }
