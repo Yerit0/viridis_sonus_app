@@ -13,6 +13,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final registrosService = Provider.of<RegistrosService>(context);
     final authService = Provider.of<AuthService>(context);
+    final usuarioService = Provider.of<UsuarioService>(context);
 
     return Scaffold(
       body: Container(
@@ -49,6 +50,9 @@ class HomeScreen extends StatelessWidget {
                       )
                         //onPressed: () => WAMyProfileScreen().launch(context),),
                     ),
+                    usuarioService.infoUsuario != null
+                    ? Text('Hola ${usuarioService.infoUsuario!.name}', style: primaryTextStyle(size: 20),)
+                    : Text(''),
                     //GestureDetector(
                     //  onTap: (){
                     //          showDialog(
