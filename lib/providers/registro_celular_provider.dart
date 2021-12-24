@@ -11,7 +11,7 @@ class RegistroCelularProvider extends ChangeNotifier{
   StreamSubscription<NoiseReading>? _noiseSubscription;
   late NoiseMeter _noiseMeter;
   late int previousMillis;
-  int duracionMinimaDeGrabacion = 20;
+  int duracionMinimaDeGrabacion = 30;
   double millis = 0;
 
   double _correccionRuido = 0.0;
@@ -61,7 +61,7 @@ class RegistroCelularProvider extends ChangeNotifier{
     _noiseMeter = NoiseMeter(onError);
   }
 
-    obtenerMedia(){
+  obtenerMedia(){
       List<double?> listaSeparada = [];
       List<double?> listaMedia = [];
       double promedioMedia = 0;
@@ -81,9 +81,9 @@ class RegistroCelularProvider extends ChangeNotifier{
       promedioMedia = promedioMedia / listaMedia.length;
       listaSeparada.sort();
 
-      maxima = listaSeparada.last;
-      media = promedioMedia;
-      minima = listaSeparada.first;
+      maxima = double.parse(listaSeparada.last!.toStringAsFixed(2)) ;
+      media = double.parse(promedioMedia.toStringAsFixed(2));
+      minima = double.parse(listaSeparada.first!.toStringAsFixed(2));
       } else {
         return 'No has capturado datos';
       }
@@ -146,6 +146,8 @@ class RegistroCelularProvider extends ChangeNotifier{
       _noiseSubscription = null;
     }
     isRecording = false;
+    obtenerMedia();
+    notifyListeners();
   } catch (err) {
     print('stopRecorder error: $err');
   }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -20,17 +22,32 @@ class RegistroCelularScreen extends StatelessWidget {
   }
 }
 
-class _BuildGrabacionScreen extends StatelessWidget {
+class _BuildGrabacionScreen extends StatefulWidget {
+  @override
+  State<_BuildGrabacionScreen> createState() => _BuildGrabacionScreenState();
+}
+
+class _BuildGrabacionScreenState extends State<_BuildGrabacionScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    Timer.run(() => showInstrucciones(context: context));
+  }
+
   @override
   Widget build(BuildContext context) {
+    
     final registroCelular = Provider.of<RegistroCelularProvider>(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        //title: Text('Captura',
-        //    style: boldTextStyle(color: Colors.black, size: 20)),
+        actions: [IconButton(
+          icon: Icon(Icons.info_outline),
+          onPressed: () => showInstrucciones(context: context)
+        ),],
         centerTitle: true,
+        backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
       body: Container(
@@ -46,11 +63,12 @@ class _BuildGrabacionScreen extends StatelessWidget {
             child: Center(
                 child: Column(
               children: [
-                50.height,
+                35.height,
                 Text(
                   'Registrar Medición',
                   style: boldTextStyle(size: 24),
                 ),
+                10.height,
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 5),
                   child: Stack(
@@ -70,6 +88,8 @@ class _BuildGrabacionScreen extends StatelessWidget {
                             _tituloCaptura(registroCelular),
                             _radialGauge(context, registroCelular),
                             _chart(registroCelular),
+                            _resumenData(registroCelular),
+                            10.height,
                             _switchButton(registroCelular),
                             10.height,
                             _correccionRuido(registroCelular, context),
@@ -91,6 +111,42 @@ class _BuildGrabacionScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget _resumenData(RegistroCelularProvider registroCelular) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.grey.withOpacity(0.2)
+        ),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 30),
+      child: Column(
+        children: [
+          Center(child: Text('Resumen',style: primaryTextStyle(size:16),)),
+          5.height,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(children: [
+                Text('Mín'),
+                Text(registroCelular.minima == null ? '0.0' : '${registroCelular.minima} dB')
+              ],),
+              Column(children: [
+                Text('Media'),
+                Text(registroCelular.media == null ? '0.0' : '${registroCelular.media} dB')
+              ],),
+              Column(children: [
+                Text('Máx'),
+                Text(registroCelular.maxima == null ? '0.0' : '${registroCelular.maxima} dB')
+              ],),
+            ],
+          ),
+          5.height
+        ],
+      ),
+    );
+    }
 
   Container _correccionRuido(RegistroCelularProvider registroCelular, BuildContext context) {
     return Container(
@@ -362,6 +418,20 @@ Widget _botonesCaptura(
       ),
     ],
   );
+}
+
+showInstrucciones({required BuildContext context}){
+  return showADialogCustom(context,
+  title:'Instrucciones',
+  subTitle: 'Antes de iniciar con los registros, recuerda:\n\n' 
+    '- Las Lecturas deben durar mínimo 30 segundos.\n' 
+    '- Debes estar a una distancia de 1.5 metros del suelo.\n'
+    '- Debes estar alejado de paredes o superficies.\n'
+    '- Procura no tapar el micrófono del teléfono.',
+  subtitleAlign: TextAlign.justify,
+  positiveText: 'Entendido',
+  onAccept: (context){});
+
 }
 
 
