@@ -222,11 +222,24 @@ class _LoginForm extends StatelessWidget {
                     children: [
                       Text('¿No tienes cuenta?', style: primaryTextStyle(color: Colors.grey)),
                       4.width,
-                      Text('Registrate aquí', style: boldTextStyle(color: Colors.black)),
+                      Text('Regístrate aquí', style: boldTextStyle(color: Colors.black)),
                     ],
                   ).onTap(() {
                     Navigator.pushReplacementNamed(context, 'register');
                   }).center(),
+                  20.height,
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('Política de privacidad', style: primaryTextStyle(color: Colors.grey)),
+                    ],
+                  ).onTap(() {
+                    Navigator.pushNamed(context, 'policy');
+                  }).center(),
+
+
                 ],
               ),
             ),

@@ -50,6 +50,17 @@ class QuickMenuScreen extends StatelessWidget {
                       if (!await launch('https://viridussonus.cl/tips/')) throw 'Could not launch url';
                     }).paddingOnly(left: context.width() * 0.05, right: context.width() * 0.05),
                   SizedBox(height: 20,),
+                  AppButton(
+                    text: "Políticas de Privacidad",
+                    color: PrimaryColor,
+                    textColor: Colors.white,
+                    shapeBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    width: context.width(),
+                    onTap: ()  {
+                      Navigator.pushNamed(context, 'policy');
+                    },).paddingOnly(left: context.width() * 0.05, right: context.width() * 0.05),
+                  SizedBox(height: 20,),
+                  
                  
                 ],
               )),

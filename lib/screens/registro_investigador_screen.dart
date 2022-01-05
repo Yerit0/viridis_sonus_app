@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +11,19 @@ import 'package:viridis_sonus_app/services/sonometro_services.dart';
 import 'package:viridis_sonus_app/utils/widgets/Colors.dart';
 import 'package:viridis_sonus_app/utils/widgets/Widgets.dart';
 
-class RegistroInvestigadorScreen extends StatelessWidget {
+class RegistroInvestigadorScreen extends StatefulWidget {
+  @override
+  State<RegistroInvestigadorScreen> createState() => _RegistroInvestigadorScreenState();
+}
+
+class _RegistroInvestigadorScreenState extends State<RegistroInvestigadorScreen> {
+  
+  @override
+  void initState() {
+    super.initState();
+    Timer.run(() => _showInstrucciones(context: context));
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -293,4 +307,13 @@ class _RegistrarSonidoForm extends StatelessWidget {
       ),
     );
   }
+}
+
+_showInstrucciones({required BuildContext context}){
+  return showADialogCustom(context,
+  title:'Hola Investigador',
+  subTitle: '- Al enviar el registro, solicitaremos acceso a la ubicación para determinar la posición del registro. Por favor concede los permisos o el registro será rechazado.',
+  subtitleAlign: TextAlign.justify,
+  positiveText: 'Entendido',
+  onAccept: (context){});
 }

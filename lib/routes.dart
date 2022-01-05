@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:viridis_sonus_app/screens/policy_screen.dart';
 import 'package:viridis_sonus_app/screens/screens.dart';
 
 Map<String, WidgetBuilder> routes(){
@@ -11,5 +12,6 @@ Map<String, WidgetBuilder> routes(){
     'dashboard'     : (BuildContext context) => DashboardScreen(),
     'celular'       : (BuildContext context) => RegistroCelularScreen(),
     'investigador'  : (BuildContext context) => RegistroInvestigadorScreen(),
+    'policy'        : (BuildContext context) => PolicyScreen(),
   };
 }

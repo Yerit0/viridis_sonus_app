@@ -32,7 +32,7 @@ class _BuildGrabacionScreenState extends State<_BuildGrabacionScreen> {
   @override
   void initState() {
     super.initState();
-    Timer.run(() => showInstrucciones(context: context));
+    Timer.run(() => _showInstrucciones(context: context));
   }
 
   @override
@@ -44,7 +44,7 @@ class _BuildGrabacionScreenState extends State<_BuildGrabacionScreen> {
       appBar: AppBar(
         actions: [IconButton(
           icon: Icon(Icons.info_outline),
-          onPressed: () => showInstrucciones(context: context)
+          onPressed: () => _showInstrucciones(context: context)
         ),],
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -420,14 +420,15 @@ Widget _botonesCaptura(
   );
 }
 
-showInstrucciones({required BuildContext context}){
+_showInstrucciones({required BuildContext context}){
   return showADialogCustom(context,
   title:'Instrucciones',
   subTitle: 'Antes de iniciar con los registros, recuerda:\n\n' 
     '- Las Lecturas deben durar mínimo 30 segundos.\n' 
     '- Debes estar a una distancia de 1.5 metros del suelo.\n'
     '- Debes estar alejado de paredes o superficies.\n'
-    '- Procura no tapar el micrófono del teléfono.',
+    '- Procura no tapar el micrófono del teléfono.\n'
+    '- Al enviar el registro, solicitaremos acceso a la ubicación para determinar la posición del registro. Por favor concede los permisos o el registro será rechazado.',
   subtitleAlign: TextAlign.justify,
   positiveText: 'Entendido',
   onAccept: (context){});
